@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+ <!-- Container -->
+    <div class="container my-4">
+
+        <!-- Summary Cards -->
+        <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+                <div class="card text-center shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">Total This Month</h5>
+                        <h3 class="card-text">${{total_expense_this_month}}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-center shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">Total This Year</h5>
+                        <h3 class="card-text">${{avg_expense_amount_this_year}}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-center shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">Avg Daily Spend</h5>
+                        <h3 class="card-text">${{avg_daily_expense_amount}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- Charts Section placeholder-->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="card shadow p-3" style="height: 400px; width: 100%;">
+                    <h5 class="card-title text-center">Spending by Category (PieChart)</h5>
+                    <h6 class="card-subtitle mb-2 text-muted text-center">Shows how your spending is distributed across categories</h6>
+                    <canvas id="pieChart" style="max-width:300px; max-height:300px; margin:auto;"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow p-3" style="height: 400px; width: 100%;">
+                    <h5 class="card-title text-center">Spending Over Time (LineChart)</h5>
+                    <h6 class="card-subtitle mb-2 text-muted text-center">Tracks your spending trends over time</h6>
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="card shadow p-3" style="height: 400px; width: 100%;">
+                    <h5 class="card-title text-center">Expense Distribution (Histogram)</h5>
+                    <h6 class="card-subtitle mb-2 text-muted text-center">Shows how often different expense amounts occur. Helps identify if you spend many small amounts vs few large ones</h6>
+                    <canvas id="histogramChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow p-3" style="height: 400px; width: 100%;">
+                    <h5 class="card-title text-center">Monthly Expenses by Category (StackedBar)</h5>
+                    <h6 class="card-subtitle mb-2 text-muted text-center">Shows how your spending in different categories changes month to month</h6>
+                    <canvas id="stackedBarChart"></canvas>
+                </div>   
+            </div>
+        </div> 
+
+        <!-- Recent Expenses Table -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow p-3">
+                    <h5 class="card-title mb-3">Recent Expenses</h5>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for expense in recent_expenses %}
+                            {% include 'includes/delete_modal.html'%}
+                            <tr>
+                                <td>{{expense.date}}</td>
+                                <td>{{expense.category}}</td>
+                                <td>{{expense.amount}}</td>
+                                <td>{{expense.description}}</td>
+                                <td>
+                                    <!-- Edit button triggers the edit route -->
+                                    <a href="{{ url_for('edit_expense', expense_id=expense.id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                    <!-- Delete button triggers modal which triggers delete route -->
+                                    <button type="button"  class="btn btn-sm btn-danger"  data-bs-toggle="modal" data-bs-target="#deleteModal{{ expense.id }}">Delete</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Chart.js Scripts to render charts -->
+    <script>
+        // Pie Chart (spending by category)
+     new Chart(document.getElementById('pieChart'), {
+        type: 'pie',
+        data: {
+            labels: {{ categories|tojson }}, // convert categories to JSON
+            datasets: [{
+                data: {{ category_values|tojson }},
+                backgroundColor: ['#ff6384','#36a2eb','#ffce56','#4bc0c0','#9966ff','#ff9f40']
+            }]
+        }
+     });
+
+    // Line Chart (spending over time)
+    new Chart(document.getElementById('lineChart'), {
+        type: 'line',
+        data: {
+            labels: {{ dates|tojson }}, // convert dates to JSON
+            datasets: [{
+                label: 'Expenses',
+                data: {{ date_values|tojson }},
+                borderColor: '#36a2eb',
+                backgroundColor: 'rgba(54,162,235,0.2)',
+                fill: true
+            }]
+        }
+    });
+    // Histogram (expense distribution)
+    new Chart(document.getElementById('histogramChart'), {
+        type: 'bar',
+        data: {
+            labels: {{ histogram_bins|tojson }},
+            datasets: [{
+                label: 'Frequency',
+                data: {{ histogram_values|tojson }},
+                backgroundColor: ['#ff6384','#36a2eb','#ffce56','#4bc0c0','#9966ff','#ff9f40']
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Expense Amount Ranges'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Number of Expenses'
+                    },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<script>
+new Chart(document.getElementById('stackedBarChart'), {
+    type: 'bar',
+    data: {
+        labels: {{ stacked_labels|tojson }},
+        datasets: {{ stacked_datasets|tojson }}
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            title: { display: true, text: 'Expenses by Category per Month' },
+        },
+        scales: {
+            x: { stacked: true },
+            y: { stacked: true }
+        }
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,49 @@
+{%extends 'base.html' %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<!-- Centered Card -->
+  <div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
+      <h3 class="text-center mb-4">Create an Account</h3>
+
+      <form method="POST">
+        {{ form.hidden_tag() }} <!-- CSRF Token -->
+
+        <!-- Username -->
+        <div class="mb-3">
+          {{ form.username.label(class="form-label") }}
+          {{ form.username(class="form-control", placeholder="Choose a username") }}
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          {{ form.email.label(class="form-label") }}
+          {{ form.email(class="form-control", placeholder="Enter your email") }}
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          {{ form.password.label(class="form-label") }}
+          {{ form.password(class="form-control", placeholder="Create a password") }}
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="mb-3">
+          {{ form.confirm_password.label(class="form-label") }}
+          {{ form.confirm_password(class="form-control", placeholder="Confirm password") }}
+        </div>
+
+        <!-- Submit -->
+        <div class="d-grid">
+          {{ form.submit(class="btn btn-success") }}
+        </div>
+      </form>
+
+      <p class="text-center mt-3">
+        Already have an account? 
+        <a href="{{ url_for('login_page') }}">Login here</a>
+      </p>
+    </div>
+  </div>
+{% endblock %}

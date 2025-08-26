@@ -1,0 +1,51 @@
+{%extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+  <div class="container text-center mt-5">
+    <h1 class="display-4 fw-bold">Welcome to Expense Tracker</h1>
+    <p class="lead text-muted">Track your spending, manage budgets, and take control of your finances.</p>
+
+    <div class="mt-4">
+      <a href="{{ url_for('login_page') }}" class="btn btn-primary btn-lg me-3">Login</a>
+      <a href="{{ url_for('register_page') }}" class="btn btn-outline-primary btn-lg">Register</a>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="container text-center mt-5">
+    <div class="row">
+      <!-- Feature 1 -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow border-0 h-100">
+          <div class="card-body">
+            <h1>💸</h1>
+            <h5 class="card-title mt-2">Track Expenses Easily</h5>
+            <p class="card-text text-muted">Add, edit, and organize your daily spending in seconds.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Feature 2 -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow border-0 h-100">
+          <div class="card-body">
+            <h1>📊</h1>
+            <h5 class="card-title mt-2">Visualize Spending</h5>
+            <p class="card-text text-muted">See your expenses as charts and reports to understand your habits.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Feature 3 -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow border-0 h-100">
+          <div class="card-body">
+            <h1>🔐</h1>
+            <h5 class="card-title mt-2">Secure Accounts</h5>
+            <p class="card-text text-muted">Your data is safe with authentication and secure login.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

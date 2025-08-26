@@ -1,0 +1,77 @@
+{%extends 'base.html' %}
+{% block title %}My Expenses{% endblock %}
+
+{% block content %}
+<!-- Container -->
+<div class="container my-5">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="card shadow p-3">
+                <h4 class="card-title mb-3">Filter Expenses</h4>
+                <form class="row g-3" method="post" action="{{ url_for('my_expenses_page') }}">
+                    <div class="col-md-6">
+                        <input type="date" class="form-control" aria-label="Date" id="date" name="date">
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-select"  aria-label="Category" id="category" name="category">
+                            <option value="" disabled selected>-- Select Category --</option>
+                            <option value="Food">Food</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Bills">Bills</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Travel">Travel</option>
+                            <option value="shopping">Shopping</option>
+                            <option value="Dining Out">Dining Out</option>
+                            <option value="Education">Education</option>
+                            <option value="Health">Health</option>
+                            <option value="Gifts">Gifts</option>
+                            <option value="Donations">Donations</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                    <div class="col-12 text-center">
+                        <button type="submit" class="btn btn-primary">Apply Filter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Expenses Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow p-3">
+                <h4 class="card-title mb-3">My Expenses</h4>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for expense in expenses %}
+                        {% include 'includes/delete_modal.html' %}
+                        <tr>
+                            <td>{{expense.date}}</td>
+                            <td>{{expense.category}}</td>
+                            <td>{{expense.amount}}</td>
+                            <td>{{expense.description}}</td>
+                            <td>
+                                    <!-- Edit button triggers the edit route -->
+                                    <a href="{{ url_for('edit_expense', expense_id=expense.id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                    <!-- Delete button triggers modal which triggers delete route -->
+                                    <button type="button"  class="btn btn-sm btn-danger"  data-bs-toggle="modal" data-bs-target="#deleteModal{{ expense.id }}">Delete</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
