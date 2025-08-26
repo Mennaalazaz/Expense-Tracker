@@ -1,33 +1,33 @@
 # Expense-Tracker
-💸 Expense Tracker (Flask App)
+# 💸 Expense Tracker (Flask App)
 
-A simple web application built with Flask that allows users to track their expenses, visualize spending, and manage their budgets.
-This project demonstrates Flask basics, including authentication, CRUD operations, and data visualization.
+A simple **Expense Tracker Web App** built with flask that allows users to **track their daily expenses, view spending insights, and manage budgets**.  
 
-🚀 Features
+<p align="center">
+  <img src="https://img.shields.io/badge/Flask-2.3-blue?logo=flask" />
+  <img src="https://img.shields.io/badge/Bootstrap-5-purple?logo=bootstrap" />
+  <img src="https://img.shields.io/badge/SQLite-Database-green?logo=sqlite" />
+  <img src="https://img.shields.io/badge/Chart.js-Data%20Viz-orange?logo=chartdotjs" />
+</p>
 
-🔐 User Authentication (Register, Login, Logout using Flask-Login)
+---
 
-➕ Add Expenses (amount, category, date, description)
+## 🚀 Features
+- 🔐 **User Authentication** (Register, Login, Logout)  
+- ➕ **Add Expenses** (amount, category, date, description)  
+- 📋 **View, Edit, Delete Expenses**  
+- 📊 **Dashboard with Charts** (Category-wise & Monthly spending using Chart.js)  
+- 💾 **SQLite Database** with SQLAlchemy ORM  
+- 🎨 **Responsive UI** with Bootstrap 5  
 
-📋 View Expenses (list with filters by date/category)
+---
 
-✏️ Edit / Delete Expenses
+## 🛠️ Tech Stack
+| Layer         | Technology                  |
+|---------------|-----------------------------|
+| **Backend**   | Flask, Flask-Login, Flask-WTF |
+| **Database**  | SQLite (via SQLAlchemy ORM) |
+| **Frontend**  | Bootstrap 5, Chart.js       |
+| **Tools**     | Flask-Migrate, Jinja2       |
 
-📊 Dashboard with:
-
-Total spending summary
-
-Charts (expenses by category/date using Chart.js)
-
-Recent expenses list
-
-🛠️ Tech Stack
-
-Backend: Flask, Flask-Login, Flask-WTF, Flask-Migrate
-
-Database: SQLite (easy setup) → can be switched to PostgreSQL/MySQL
-
-Frontend: Bootstrap 5, Chart.js
-
-Other Tools: SQLAlchemy ORM
+---
